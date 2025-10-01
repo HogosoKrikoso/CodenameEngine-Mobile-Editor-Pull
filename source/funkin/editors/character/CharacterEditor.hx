@@ -352,6 +352,10 @@ class CharacterEditor extends UIState {
 
 	var _point:FlxPoint = new FlxPoint();
 	var _nextScroll:FlxPoint = FlxPoint.get(0,0);
+	var mouseStartX:Float = 0;
+    var mouseStartY:Float = 0;
+    var pointStartX:Float = 0;
+    var pointStartY:Float = 0;
 	var _cameraZoomMulti:Float = 1;
 
 	public var draggingCharacter:Bool = false;
@@ -371,10 +375,21 @@ class CharacterEditor extends UIState {
 				closeCurrentContextMenu();
 				openContextMenu(topMenu[2].childs, null, mousePos.x, mousePos.y);
 			}
-
-			if (FlxG.mouse.pressed && !FlxG.mouse.justPressed) {
-				_nextScroll.set(_nextScroll.x - FlxG.mouse.deltaScreenX, _nextScroll.y - FlxG.mouse.deltaScreenY);
-				cameraHoverDummy.cursor = HAND;
+			
+            if (FlxG.mouse.justPressed) {
+				var mousePos = FlxG.mouse.getScreenPosition(uiCamera);
+                mouseStartX = mousePos.x;
+                mouseStartY = mousePos.y;
+                pointStartX = _nextScroll.x;
+                pointStartY = _nextScroll.y;
+            }
+            if (FlxG.mouse.pressed && !FlxG.mouse.justPressed){
+				var mousePos = FlxG.mouse.getScreenPosition(uiCamera);
+                var distanceX:Float = mouseStartX - mousePos.x;
+                var distanceY:Float = mouseStartY - mousePos.y;
+                _nextScroll.x = pointStartX + distanceX;
+                _nextScroll.y = pointStartY + distanceY;
+			    cameraHoverDummy.cursor = HAND;
 			} else
 				cameraHoverDummy.cursor = ARROW;
 		} else if (!FlxG.mouse.pressed)
@@ -860,7 +875,7 @@ class CharacterEditor extends UIState {
 	var __camZoom(default, set):Float = 1;
 	function set_zoom(val:Float) {
 		return zoom = CoolUtil.bound(val, -3.5, 1.75); // makes zooming not lag behind when continuing scrolling
-	}
+	},ñ
 	function set___camZoom(val:Float) {
 		return __camZoom = CoolUtil.bound(val, 0.1, 3);
 	}
