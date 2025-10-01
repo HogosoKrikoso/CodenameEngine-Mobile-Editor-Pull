@@ -476,7 +476,7 @@ class StageEditor extends UIState {
 				if (FlxG.mouse.pressed && !FlxG.mouse.justPressed) {
 					var mousePos = FlxG.mouse.getScreenPosition(uiCamera);
                     var distanceX:Float = mouseStartX - mousePos.x;
-                    var distanceY:FloapointStartY2rtY - mousePos.y;
+                    var distanceY:Float = mouseStartY - mousePos.y;
                     nextScroll.x = pointStartX + distanceX; nextScroll.y = pointStartY + distanceY;
 					movedTillRel.x = pointStartX2 - distanceX; movedTillRel.y = pointStartY - distanceY;
 			        currentCursor = HAND;
