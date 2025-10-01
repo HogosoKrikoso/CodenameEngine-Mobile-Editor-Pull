@@ -875,7 +875,7 @@ class CharacterEditor extends UIState {
 	var __camZoom(default, set):Float = 1;
 	function set_zoom(val:Float) {
 		return zoom = CoolUtil.bound(val, -3.5, 1.75); // makes zooming not lag behind when continuing scrolling
-	},ñ
+	}
 	function set___camZoom(val:Float) {
 		return __camZoom = CoolUtil.bound(val, 0.1, 3);
 	}
