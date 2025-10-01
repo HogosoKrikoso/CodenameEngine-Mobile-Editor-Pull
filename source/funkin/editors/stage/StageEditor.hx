@@ -419,7 +419,12 @@ class StageEditor extends UIState {
 
 	//private var movingCam:Bool = false;
 	//private var camDragSpeed:Float = 1.2;
-
+	private var mouseStartX:Float = 0;
+    private var mouseStartY:Float = 0;
+    private var pointStartX:Float = 0;
+    private var pointStartY:Float = 0;
+	private var pointStartX2:Float = 0;
+    private var pointStartY2:Float = 0;
 	private var movedTillRel:FlxPoint = FlxPoint.get(0,0);
 	private var nextScroll:FlxPoint = FlxPoint.get(0,0);
 
@@ -436,7 +441,6 @@ class StageEditor extends UIState {
 
 		currentCursor = ARROW;
 
-		FlxG.mouse.getWorldPosition(stageCamera, mousePoint);
 		if ((!stageSpritesWindow.hovered && !stageSpritesWindow.dragging) && !topMenuSpr.hovered) {
 			if (FlxG.mouse.wheel != 0) {
 				zoom += 0.25 * FlxG.mouse.wheel;
@@ -460,12 +464,22 @@ class StageEditor extends UIState {
 			//}
 
 			if (mouseMode == NONE && prevMode == NONE) {
-				if (FlxG.mouse.pressed) {
-					var x = FlxG.mouse.deltaScreenX;
-					var y = FlxG.mouse.deltaScreenY;
-					movedTillRel.x += x; movedTillRel.y += y;
-					nextScroll.set(nextScroll.x - x, nextScroll.y - y);
-					currentCursor = HAND;
+				if (FlxG.mouse.justPressed) {
+				    var mousePos = FlxG.mouse.getScreenPosition(uiCamera);
+                    mouseStartX = mousePos.x;
+                    mouseStartY = mousePos.y;
+                    pointStartX = nextScroll.x;
+                    pointStartY = nextScroll.y;
+					pointStartX2 = movedTillRel.x;
+                    pointStartY2 = movedTillRel.y;
+				}
+				if (FlxG.mouse.pressed && !FlxG.mouse.justPressed) {
+					var mousePos = FlxG.mouse.getScreenPosition(uiCamera);
+                    var distanceX:Float = mouseStartX - mousePos.x;
+                    var distanceY:FloapointStartY2rtY - mousePos.y;
+                    nextScroll.x = pointStartX + distanceX; nextScroll.y = pointStartY + distanceY;
+					movedTillRel.x = pointStartX2 - distanceX; movedTillRel.y = pointStartY - distanceY;
+			        currentCursor = HAND;
 				}
 
 				if (FlxG.mouse.justReleased) {
